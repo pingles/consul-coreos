@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+this_ip="$1"
+this_machine="$2"
+
+etcdctl="docker run --net=host --rm quay.io/coreos/etcd:v0.4.6 /etcdctl"
+fleetctl="docker run --net=host --rm cap10morgan/fleetctl:v0.8.3"
+
+bootstrap_expect=$(${fleetctl} list-machines | grep -v IP | wc -l)
+
+${etcdctl} set /consul.io/bootstrap/machines/${this_machine} ${this_ip} > /dev/null
+
+nodes=( $(${etcdctl} ls /consul.io/bootstrap/machines) )
+first_node=${nodes[0]}
+
+if [[ -n "${first_node}" ]]; then
+  join_ip=$(${etcdctl} get ${first_node})
+  if [[ "${join_ip}" == "${this_ip}" ]]; then
+    join_ip=""
+  fi
+fi
+
+ip_args="${this_ip}"
+if [[ -n "${join_ip}" ]]; then
+  ip_args="${ip_args}::${join_ip}"
+fi
+
+printf -v cmd '$(docker run --rm progrium/consul cmd:run %s -d -v /var/lib/consul:/data)' "${ip_args}"
+
+echo "Running: ${cmd}"
+
+exec /bin/bash -c "${cmd}"
