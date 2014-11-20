@@ -29,5 +29,6 @@ fi
 
 printf -v cmd '$(docker run --rm progrium/consul cmd:run %s -v /var/lib/consul:/data)' "${ip_args}"
 
+docker pull progrium/consul
 
 exec /bin/bash -c "${cmd}"
