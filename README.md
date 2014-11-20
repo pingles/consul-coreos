@@ -22,6 +22,6 @@ fleetctl start consul@3
 
 ## Implementation
 
-It will use etcd and fleet to determine the size and configuration of your CoreOS cluster and spin up a Consul cluster on top of it. It runs Consul inside Docker containers (as nature intended) using [progrium's excellent Consul Docker image](https://github.com/progrium/docker-consul).
+It uses etcd and fleet to determine the size and configuration of your CoreOS cluster and spins up a Consul cluster on top of it. It runs Consul inside Docker containers (as nature intended) using [progrium's excellent Consul Docker image](https://github.com/progrium/docker-consul).
 
 Note that as of now, it only supports running Consul on *every* CoreOS host in your cluster. This is because it looks at the output of `fleetctl list-machines` and tells Consul to expect that many hosts to connect before bootstrapping the cluster.
