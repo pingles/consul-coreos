@@ -1,4 +1,4 @@
-# Consul in a Docker container w/ etcd bootstrap
+# Consul + CoreOS - hassles
 
 This is for running a [Consul](http://consul.io/) cluster on [CoreOS](http://coreos.com) using etcd and fleet to bootstrap it.
 
