@@ -1,0 +1,18 @@
+[Unit]
+Description=Consul
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=0
+ExecStartPre=mkdir -p /var/lib/consul
+ExecStartPre=-/usr/bin/docker kill consul
+ExecStartPre=-/usr/bin/docker rm consul
+ExecStartPre=/usr/bin/docker pull cap10morgan/consul-coreos
+ExecStart=/bin/bash -c 'MACHINE_ID=$(</etc/machine-id); /usr/bin/docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock cap10morgan/consul-coreos ${COREOS_PRIVATE_IPV4} $${MACHINE_ID}'
+ExecStop=/usr/bin/docker stop consul
+ExecStopPost=/bin/bash -c 'MACHINE_ID=$(</etc/machine-id); /usr/bin/etcdctl rm /consul.io/bootstrap/machines/$${MACHINE_ID}'
+
+[X-Fleet]
+Conflicts=consul@*.service
