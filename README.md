@@ -13,11 +13,8 @@ This also allows you to run [Registrator](https://github.com/progrium/registrato
 A service file is included, so you just need to submit it and run it on your CoreOS cluster:
 
 ```
-fleetctl submit consul@.service
-fleetctl start consul@1
-fleetctl start consul@2
-fleetctl start consul@3
-...
+fleetctl submit consul.service
+fleetctl start consul
 ```
 
 ## Implementation
