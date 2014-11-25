@@ -27,7 +27,7 @@ if [[ -n "${join_ip}" ]]; then
   ip_args="${ip_args}::${join_ip}"
 fi
 
-printf -v cmd '$(docker run --rm progrium/consul cmd:run %s -v /var/lib/consul:/data)' "${ip_args}"
+printf -v cmd '$(docker run --rm progrium/consul cmd:run %s -v /var/lib/consul:/data -p ${this_ip}:53:53/udp)' "${ip_args}"
 
 docker pull progrium/consul
 
