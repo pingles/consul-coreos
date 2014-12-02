@@ -26,7 +26,8 @@ Note that as of now, it only supports running Consul on *every* CoreOS host in y
 
 ## TODO
 
-Get rid of the persistent consul-coreos containers. They are a side-effect of how I'm currently launching the consul containers, but there's probably a more clever way to do it so that you only have consul containers but systemd is still aware of the running process, etc.
+1. Get rid of the persistent consul-coreos containers. They are a side-effect of how I'm currently launching the consul containers, but there's probably a more clever way to do it so that you only have consul containers but systemd is still aware of the running process, etc.
+1. Switch to adding client nodes (as opposed to more server nodes) when the cluster is above a certain size. For now this has been tested on a 3-node cluster and should work on clusters close to that size.
 
 ## License
 
