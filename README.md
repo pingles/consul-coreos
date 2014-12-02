@@ -10,7 +10,8 @@ This also allows you to run [Registrator](https://github.com/progrium/registrato
 
 ## Usage
 
-A service file is included, so you just need to submit it and run it on your CoreOS cluster:
+1. Clone this repo: `git clone https://github.com/cap10morgan/consul-coreos.git`
+1. Submit and run the included service file on your CoreOS cluster:
 
 ```
 fleetctl submit consul.service
