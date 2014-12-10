@@ -33,7 +33,7 @@ if [[ -n "${join_ip}" ]]; then
   ip_args="${ip_args}::${join_ip}"
 fi
 
-printf -v cmd '$(docker run --rm progrium/consul cmd:run %s -v /var/lib/consul:/data -p ${this_ip}:8400:8400 -p ${this_ip}:8500:8500 -p ${this_ip}:8600:8600 )' "${ip_args}"
+printf -v cmd '$(docker run --rm progrium/consul cmd:run %s -v /var/lib/consul:/data -p 8400:8400 -p 8500:8500 -p 8600:8600 )' "${ip_args}"
 
 echo "pulling progrium/consul"
 docker pull progrium/consul
