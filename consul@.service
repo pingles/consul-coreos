@@ -1,0 +1,20 @@
+[Unit]
+Description=Consul
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=0
+ExecStartPre=mkdir -p /var/lib/consul
+ExecStartPre=-/usr/bin/docker kill consul
+ExecStartPre=-/usr/bin/docker rm consul
+ExecStartPre=/usr/bin/docker pull quay.io/pingles/consul-coreos
+
+ExecStart=/bin/bash -c '/usr/bin/docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock quay.io/pingles/consul-coreos ${COREOS_PRIVATE_IPV4} %m'
+ExecStop=/usr/bin/docker stop consul
+
+ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'
+
+[X-Fleet]
+Conflicts=consul@*.service
