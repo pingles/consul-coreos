@@ -5,8 +5,8 @@ set -e
 this_ip="$1"
 this_machine="$2"
 
-etcdctl="/usr/bin/etcdctl"
-fleetctl="/usr/bin/fleetctl"
+etcdctl="docker run --net=host --rm quay.io/pingles/etcdctl:latest"
+fleetctl="docker run --net=host --rm cap10morgan/fleetctl:v0.8.3"
 
 bootstrap_expect=$(${fleetctl} list-machines | grep -v IP | wc -l)
 
