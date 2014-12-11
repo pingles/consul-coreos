@@ -11,7 +11,7 @@ ExecStartPre=-/usr/bin/docker kill consul
 ExecStartPre=-/usr/bin/docker rm consul
 ExecStartPre=/usr/bin/docker pull quay.io/pingles/consul-coreos:pingles-repo
 
-ExecStart=/bin/bash -c '/usr/bin/docker run --name consul -p 8400 -p 8500:8500 -p 8600:53/udp --rm quay.io/pingles/consul-coreos:pingles-repo %m'
+ExecStart=/bin/bash -c '/usr/bin/docker run --name consul -p 8400 -p 8500:8500 -p 8600:53/udp --rm quay.io/pingles/consul-coreos:pingles-repo %m ${COREOS_PRIVATE_IPV4}'
 ExecStop=/usr/bin/docker stop consul
 
 ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'

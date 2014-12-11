@@ -1,17 +1,9 @@
 #!/bin/bash
 
 machine_id="$1"
-echo "starting consul on machine $machine_id"
+local_ip="$2"
 
-local_addresses=($(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'))
-# assume we set a LOCAL_IP env variable for us to register when running locally
-local_ip="${local_addresses[0]}"
-echo "using local ip: $local_ip"
-
-if [ -n "$COREOS_PRIVATE_IPV4" ]; then
-  echo "coreos private ip: $COREOS_PRIVATE_IPV4"
-  local_ip = "$COREOS_PRIVATE_IPV4"
-fi
+echo "starting consul on machine $machine_id, local ip $local_ip"
 
 docker_host_ip=$(netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}')
 echo "docker host ip: $docker_host_ip"
