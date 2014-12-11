@@ -22,7 +22,7 @@ ExecStart=/bin/bash -c '/usr/bin/docker run \
                           -p ${COREOS_PRIVATE_IPV4}:8500:8500 \
                           -p ${COREOS_PRIVATE_IPV4}:53:53/udp \
                           --rm quay.io/pingles/consul-coreos:pingles-repo \
-                          %m ${COREOS_PRIVATE_IPV4} -advertise ${COREOS_PRIVATE_IPV4}'
+                          %m ${COREOS_PRIVATE_IPV4} -v /var/lib/consul:/data -advertise ${COREOS_PRIVATE_IPV4}'
 ExecStop=/usr/bin/docker stop consul
 
 ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'
