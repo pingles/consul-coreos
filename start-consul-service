@@ -1,5 +1,8 @@
 #!/bin/bash
 
+machine_id="$1"
+echo "starting consul on machine $machine_id"
+
 local_addresses=($(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'))
 # assume we set a LOCAL_IP env variable for us to register when running locally
 local_ip="${local_addresses[0]}"
@@ -15,8 +18,8 @@ echo "docker host ip: $docker_host_ip"
 
 echo "bootstrapping with etcd"
 etcdctl="etcdctl --peers http://$docker_host_ip:4001"
-echo "adding $local_ip to bootstrap machines"
-${etcdctl} set "/consul.io/bootstrap/machines/$local_ip" $local_ip --ttl 60 > /dev/null  # bootstrapping will have to complete in 60s
+echo "setting /consul.io/bootstrap/machines/$machine_id to $local_ip for bootstrap"
+${etcdctl} set "/consul.io/bootstrap/machines/$machine_id" $local_ip --ttl 60 > /dev/null  # bootstrapping will have to complete in 60s
 
 echo "listing other bootstrap machines"
 bootstrap_node_paths=( $(${etcdctl} ls /consul.io/bootstrap/machines) )
@@ -40,5 +43,5 @@ if [[ -n "$join_ip" ]]; then
   run_mode="-join $join_ip"
 fi
 
-echo "starting consul: agent, -server, -config-dir=/config, -data-dir=/data, -ui-dir=/ui, -bootstrap-expect 3 $run_mode $@"
-/bin/consul agent -server -config-dir=/config -data-dir=/data -ui-dir=/ui -bootstrap-expect 3 $run_mode $@
+echo "starting consul: agent, -server, -config-dir=/config, -data-dir=/data, -ui-dir=/ui, -bootstrap-expect 3 $run_mode"
+/bin/consul agent -server -config-dir=/config -data-dir=/data -ui-dir=/ui -bootstrap-expect 3 $run_mode
