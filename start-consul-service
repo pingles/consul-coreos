@@ -34,5 +34,8 @@ if [[ -n "$join_ip" ]]; then
   run_mode="-join $join_ip"
 fi
 
-echo "starting consul: agent, -server, -config-dir=/config, -data-dir=/data, -ui-dir=/ui, -bootstrap-expect 3 $run_mode"
-/bin/consul agent -server -config-dir=/config -data-dir=/data -ui-dir=/ui -bootstrap-expect 3 $run_mode
+shift
+shift
+
+echo "starting consul: agent, -server, -config-dir=/config, -data-dir=/data, -ui-dir=/ui, -bootstrap-expect 3 $run_mode $@"
+/bin/consul agent -server -config-dir=/config -data-dir=/data -ui-dir=/ui -bootstrap-expect 3 $run_mode $@
