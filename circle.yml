@@ -7,7 +7,7 @@ test:
     - make build
 
 deployment:
-  production:
-    branch: production
+  quay:
+    branch: master
     commands:
       - make push
