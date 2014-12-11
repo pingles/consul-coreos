@@ -10,4 +10,5 @@ deployment:
   quay:
     branch: master
     commands:
+      - docker login -e="." -u="$QUAY_USER" -p="$QUAY_PASS" quay.io
       - make push
