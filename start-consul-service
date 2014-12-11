@@ -28,7 +28,7 @@ first_node_path=${bootstrap_node_paths[0]}
 join_ip=""
 if [[ -n "${first_node_path}" ]]; then
   echo "getting node details $first_node_path"
-  join_ip=$(${etcdctl} get $first_node_path)
+  join_ip=$( ${etcdctl} get $first_node_path --consistent )
   if [[ "${join_ip}" == "${local_ip}" ]]; then
     join_ip=""
   fi
