@@ -11,7 +11,7 @@ echo "docker host ip: $docker_host_ip"
 echo "bootstrapping with etcd"
 etcdctl="etcdctl --peers http://$docker_host_ip:4001"
 echo "setting /consul.io/bootstrap/machines/$machine_id to $local_ip for bootstrap"
-${etcdctl} set "/consul.io/bootstrap/machines/$machine_id" $local_ip --ttl 300 > /dev/null  # bootstrapping will have to complete in 5m
+${etcdctl} set "/consul.io/bootstrap/machines/$machine_id" $local_ip > /dev/null  # bootstrapping will have to complete in 5m
 
 echo "listing other bootstrap machines"
 bootstrap_node_paths=( $(${etcdctl} ls /consul.io/bootstrap/machines) )
