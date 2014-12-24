@@ -6,10 +6,11 @@ Requires=docker.service
 [Service]
 EnvironmentFile=/etc/environment
 TimeoutStartSec=0
-ExecStartPre=/usr/bin/mkdir -p /var/lib/consul && chmod a+rw /var/lib/consul
+ExecStartPre=/usr/bin/mkdir -p /var/lib/consul
+ExecStartPre=/usr/bin/chmod a+rw /var/lib/consul
 ExecStartPre=-/usr/bin/docker kill consul
 ExecStartPre=-/usr/bin/docker rm consul
-ExecStartPre=/usr/bin/docker pull quay.io/pingles/consul-coreos:latest
+ExecStartPre=/usr/bin/docker pull pingles/consul-coreos:latest
 
 ExecStart=/bin/bash -c '/usr/bin/docker run \
                           --name consul \
@@ -24,7 +25,7 @@ ExecStart=/bin/bash -c '/usr/bin/docker run \
                           -p ${COREOS_PUBLIC_IPV4}:8500:8500 \
                           -p ${COREOS_PRIVATE_IPV4}:53:53/udp \
                           --rm \
-                          quay.io/pingles/consul-coreos:latest \
+                          pingles/consul-coreos:latest \
                           %m ${COREOS_PRIVATE_IPV4} -advertise ${COREOS_PRIVATE_IPV4}'
 
 ExecStop=-/usr/bin/docker stop consul
