@@ -5,8 +5,8 @@ A Docker container for running a [Consul](http://consul.io/) cluster on [CoreOS]
 ## Usage
 
 ```
-fleetctl submit consul.service
-fleetctl start consul
+fleetctl submit consul@.service
+fleetctl start consul@1
 ```
 
 ## Acknowledgement

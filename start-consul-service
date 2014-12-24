@@ -1,38 +1,28 @@
 #!/bin/bash
 
 machine_id="$1"
-local_ip="$2"
+listen_ip="$2"
 
-echo "starting consul on machine $machine_id, local ip $local_ip"
+echo "starting consul on machine $machine_id, local ip $listen_ip"
 
 docker_host_ip=$(netstat -nr | grep '^0\.0\.0\.0' | awk '{print $2}')
 echo "docker host ip: $docker_host_ip"
 
 echo "bootstrapping with etcd"
 etcdctl="etcdctl --peers http://$docker_host_ip:4001"
-echo "setting /consul.io/bootstrap/machines/$machine_id to $local_ip for bootstrap"
-${etcdctl} set "/consul.io/bootstrap/machines/$machine_id" $local_ip > /dev/null  # bootstrapping will have to complete in 5m
+echo "setting /consul.io/bootstrap/machines/$machine_id to $listen_ip for bootstrap"
+${etcdctl} set "/consul.io/bootstrap/machines/$machine_id" $listen_ip > /dev/null
 
+run_mode=""
 echo "listing other bootstrap machines"
-bootstrap_node_paths=( $(${etcdctl} ls /consul.io/bootstrap/machines) )
-first_node_path=${bootstrap_node_paths[0]}
-
-join_ip=""
-if [[ -n "${first_node_path}" ]]; then
-  echo "getting node details $first_node_path"
-  join_ip=$( ${etcdctl} get $first_node_path --consistent )
-
-  echo "$first_node_path: $join_ip, current local ip: ${local_ip}"
-
-  if [[ "${join_ip}" == "${local_ip}" ]]; then
-    join_ip=""
+for node_path in $(${etcdctl} ls /consul.io/bootstrap/machines); do
+  join_ip=$( ${etcdctl} get $node_path --consistent )
+  
+  if [[ "${join_ip}" != "${listen_ip}" ]]; then
+    echo "will join with ${join_ip}"
+    run_mode="-join $join_ip"
   fi
-fi
-
-echo "join ip: $join_ip"
-if [[ -n "$join_ip" ]]; then
-  run_mode="-join $join_ip"
-fi
+done
 
 shift
 shift
