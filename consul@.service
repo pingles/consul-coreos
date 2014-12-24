@@ -15,18 +15,18 @@ ExecStartPre=/usr/bin/docker pull pingles/consul-coreos:latest
 ExecStart=/bin/bash -c '/usr/bin/docker run \
                           --name consul \
                           -v /var/lib/consul:/data \
-                          -p ${COREOS_PRIVATE_IPV4}:8300:8300 \
-                          -p ${COREOS_PRIVATE_IPV4}:8301:8301 \
-                          -p ${COREOS_PRIVATE_IPV4}:8301:8301/udp \
-                          -p ${COREOS_PRIVATE_IPV4}:8302:8302 \
-                          -p ${COREOS_PRIVATE_IPV4}:8302:8302/udp \
-                          -p ${COREOS_PRIVATE_IPV4}:8400:8400 \
-                          -p ${COREOS_PRIVATE_IPV4}:8500:8500 \
+                          -p ${COREOS_PUBLIC_IPV4}:8300:8300 \
+                          -p ${COREOS_PUBLIC_IPV4}:8301:8301 \
+                          -p ${COREOS_PUBLIC_IPV4}:8301:8301/udp \
+                          -p ${COREOS_PUBLIC_IPV4}:8302:8302 \
+                          -p ${COREOS_PUBLIC_IPV4}:8302:8302/udp \
+                          -p ${COREOS_PUBLIC_IPV4}:8400:8400 \
                           -p ${COREOS_PUBLIC_IPV4}:8500:8500 \
-                          -p ${COREOS_PRIVATE_IPV4}:53:53/udp \
+                          -p ${COREOS_PUBLIC_IPV4}:8500:8500 \
+                          -p ${COREOS_PUBLIC_IPV4}:53:53/udp \
                           --rm \
                           pingles/consul-coreos:latest \
-                          %m ${COREOS_PRIVATE_IPV4} -advertise ${COREOS_PRIVATE_IPV4}'
+                          %m ${COREOS_PUBLIC_IPV4} -advertise ${COREOS_PUBLIC_IPV4}'
 
 ExecStop=-/usr/bin/docker stop consul
 ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'
