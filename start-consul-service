@@ -27,5 +27,5 @@ done
 shift
 shift
 
-echo "starting consul: agent, -config-dir=/config, -data-dir=/data, -ui-dir=/ui, -bootstrap-expect 3 $run_mode $@"
-/bin/consul agent -config-dir=/config -data-dir=/data -ui-dir=/ui -bootstrap-expect 3 $run_mode $@
+echo "starting consul: agent, -config-dir=/config, -data-dir=/data, -ui-dir=/ui, $run_mode $@"
+/bin/consul agent -config-dir=/config -data-dir=/data -ui-dir=/ui $run_mode $@
