@@ -32,4 +32,4 @@ ExecStop=-/usr/bin/docker stop consul
 ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'
 
 [X-Fleet]
-Conflicts=consul@*.service
+Conflicts=consul*
