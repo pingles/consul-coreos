@@ -26,7 +26,7 @@ ExecStart=/bin/bash -c '/usr/bin/docker run \
                           -p ${COREOS_PUBLIC_IPV4}:53:8600/udp \
                           --rm \
                           pingles/consul-coreos:latest \
-                          %m ${COREOS_PUBLIC_IPV4} -advertise ${COREOS_PUBLIC_IPV4}'
+                          %m ${COREOS_PUBLIC_IPV4} -advertise ${COREOS_PUBLIC_IPV4} -server'
 
 ExecStop=-/usr/bin/docker stop consul
 ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'
