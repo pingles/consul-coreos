@@ -28,4 +28,4 @@ shift
 shift
 
 echo "starting consul: agent, -config-dir=/config, -data-dir=/data, -ui-dir=/ui, $run_mode $@"
-/bin/consul agent -config-dir=/config -data-dir=/data -ui-dir=/ui $run_mode $@
+/bin/consul agent -config-file=/config/config.json -config-dir=/services -data-dir=/data -ui-dir=/ui $run_mode $@
