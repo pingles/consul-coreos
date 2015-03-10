@@ -1,0 +1,41 @@
+[Unit]
+Description=Consul
+After=docker.service
+Requires=docker.service
+
+[Service]
+EnvironmentFile=/etc/environment
+TimeoutStartSec=0
+ExecStartPre=/usr/bin/mkdir -p /var/lib/consul /etc/consul.d
+ExecStartPre=/usr/bin/chmod a+rw /var/lib/consul /etc/consul.d
+ExecStartPre=-/usr/bin/docker kill consul
+ExecStartPre=-/usr/bin/docker rm consul
+ExecStartPre=/usr/bin/docker pull pingles/consul-coreos:latest
+
+ExecStart=/bin/bash -c '/usr/bin/docker run \
+                          --name consul \
+                          -v /var/lib/consul:/data \
+                          -v /etc/consul.d:/services \
+                          -p ${COREOS_PRIVATE_IPV4}:8300:8300 \
+                          -p ${COREOS_PRIVATE_IPV4}:8301:8301 \
+                          -p ${COREOS_PRIVATE_IPV4}:8301:8301/udp \
+                          -p ${COREOS_PRIVATE_IPV4}:8302:8302 \
+                          -p ${COREOS_PRIVATE_IPV4}:8302:8302/udp \
+                          -p ${COREOS_PRIVATE_IPV4}:8400:8400 \
+                          -p ${COREOS_PRIVATE_IPV4}:8500:8500 \
+                          -p ${COREOS_PRIVATE_IPV4}:8600:8600 \
+                          -p ${COREOS_PRIVATE_IPV4}:8600:8600/udp \
+                          --rm \
+                          pingles/consul-coreos:latest \
+                          -atlas-join \
+                          -atlas=ATLAS_USERNAME/infrastructure \
+                          -atlas-token=ATLAS_TOKEN \
+                          -node %m \
+                          -bootstrap-expect 3 \
+                          -advertise ${COREOS_PRIVATE_IPV4}'
+
+ExecStop=-/usr/bin/docker stop consul
+ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'
+
+[X-Fleet]
+Conflicts=consul*
