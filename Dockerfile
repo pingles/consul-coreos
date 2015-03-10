@@ -2,7 +2,7 @@ FROM  ubuntu:latest
 MAINTAINER Paul Ingles <paul@oobaloo.co.uk>
 
 RUN apt-get update
-RUN apt-get install -y unzip
+RUN apt-get install -y unzip ca-certificates
 
 WORKDIR /tmp
 
