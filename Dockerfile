@@ -13,9 +13,9 @@ RUN mv consul /bin/consul
 RUN rm consul.zip
 
 EXPOSE 8300 8301 8301/udp 8302 8302/udp 8400 8500 8600 8600/udp
-VOLUME ["/data", "/services"]
+VOLUME ["/data", "/config"]
 
 ENV SHELL /bin/bash
 
-ENTRYPOINT ["/bin/consul", "agent", "-data-dir=/data"]
+ENTRYPOINT ["/bin/consul", "agent", "-config-dir=/config", "-data-dir=/data"]
 CMD []

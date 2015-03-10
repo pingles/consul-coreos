@@ -15,7 +15,7 @@ ExecStartPre=/usr/bin/docker pull pingles/consul-coreos:latest
 ExecStart=/bin/bash -c '/usr/bin/docker run \
                           --name consul \
                           -v /var/lib/consul:/data \
-                          -v /etc/consul.d:/services \
+                          -v /etc/consul:/config \
                           -p ${COREOS_PRIVATE_IPV4}:8300:8300 \
                           -p ${COREOS_PRIVATE_IPV4}:8301:8301 \
                           -p ${COREOS_PRIVATE_IPV4}:8301:8301/udp \
