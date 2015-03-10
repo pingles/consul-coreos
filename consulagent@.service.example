@@ -35,7 +35,6 @@ ExecStart=/bin/bash -c '/usr/bin/docker run \
                           -advertise ${COREOS_PRIVATE_IPV4}'
 
 ExecStop=-/usr/bin/docker stop consul
-ExecStopPost=-/bin/bash -c '/usr/bin/etcdctl rm /consul.io/bootstrap/machines/%m'
 
 [X-Fleet]
 Conflicts=consul*
