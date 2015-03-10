@@ -31,9 +31,9 @@ ExecStart=/bin/bash -c '/usr/bin/docker run \
                           -atlas-join \
                           -atlas=ATLAS_USERNAME/infrastructure \
                           -atlas-token=ATLAS_TOKEN \
-                          -node %m \
-                          -bootstrap-expect 3 \
-                          -advertise ${COREOS_PRIVATE_IPV4}'
+                          -node=%m \
+                          -bootstrap-expect=3 \
+                          -advertise=${COREOS_PRIVATE_IPV4}'
 
 ExecStop=-/usr/bin/docker stop consul
 
