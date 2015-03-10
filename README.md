@@ -1,6 +1,6 @@
-# Consul on CoreOS Docket
+# Consul on CoreOS Docker
 
-A Docker container for running a [Consul](http://consul.io/) cluster on [CoreOS](http://coreos.com).
+A Docker container for running a [Consul](http://consul.io/) cluster on [CoreOS](http://coreos.com). Uses Consul 0.5 and [Atlas](https://atlas.hashicorp.com) for bootstrapping
 
 ## Usage
 
@@ -8,7 +8,3 @@ A Docker container for running a [Consul](http://consul.io/) cluster on [CoreOS]
 fleetctl submit consul@.service
 fleetctl start consul@1
 ```
-
-## Acknowledgement
-
-This repository was heavily forked from [cap10morgan/consul-coreos](https://github.com/cap10morgan/consul-coreos).
