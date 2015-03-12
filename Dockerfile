@@ -17,5 +17,5 @@ VOLUME ["/data", "/config"]
 
 ENV SHELL /bin/bash
 
-ENTRYPOINT ["/bin/consul", "agent", "-config-dir=/config", "-data-dir=/data"]
+ENTRYPOINT ["/bin/consul", "agent", "-config-dir=/config", "-data-dir=/data", "-client=0.0.0.0"]
 CMD []
